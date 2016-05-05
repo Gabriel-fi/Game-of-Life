@@ -12,7 +12,8 @@ namespace Game_of_Life
 {
     public partial class Form1 : Form
     {
-        bool[,] universe = new bool[5, 5];
+        bool[,] universe = new bool[40, 40];
+        bool[,] spad = new bool[40, 40];
         Timer timer = new Timer();
         int gens = 0;
 
@@ -54,14 +55,63 @@ namespace Game_of_Life
                     rect.Width = w;
                     rect.Height = h;
 
-                    if (universe[(int)x,(int)y] == true)
+                    if (universe[(int)x, (int)y] == true)
                     {
                         e.Graphics.FillRectangle(Brushes.Black, rect.X, rect.Y, rect.Width, rect.Height);
                     }
 
                     e.Graphics.DrawRectangle(Pens.Black, rect.X, rect.Y, rect.Width, rect.Height);
                 }
+                ////////////////////
+
+
+                
+
+
+                ///////////////////
             }
+        }
+
+        private void Update()
+        {
+
+
+            for (int x = 0; x < universe.GetLength(0); x++) //X-Axis
+            {
+                for (int y = 0; y < universe.GetLength(1); y++) //Y-Axis
+                {
+                    int count = 0;
+                    //Check top
+                    if (universe[x, y - 1] == true)
+                        count++;
+                    //Check top-right
+                    if (universe[x+1, y - 1] == true)
+                        count++;
+                    //Check right
+                    if (universe[x+1, y] == true)
+                        count++;
+                    //Check bottom-right
+                    if (universe[x+1, y +1] == true)
+                        count++;
+                    //Check-bottom
+                    if (universe[x, y + 1] == true)
+                        count++;
+                    //Check bottom-left
+                    if (universe[x-1, y + 1] == true)
+                        count++;
+                    //Check left
+                    if (universe[x-1, y] == true)
+                        count++;
+                    //Check top-left
+                    if (universe[x-1, y - 1] == true)
+                        count++;
+
+                    if (count == 2 || count == 3)
+                        spad[x, y] = true;
+                }
+            }
+            universe = spad;
+            spad = new bool[40, 40];
         }
 
         private void graphicsPanel1_MouseClick(object sender, MouseEventArgs e)
