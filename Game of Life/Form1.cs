@@ -25,6 +25,7 @@ namespace Game_of_Life
             timer.Interval = 20;
             timer.Start();
             timer.Tick += Timer_Tick;
+            Update1();
         }
 
         private void Timer_Tick(object sender, EventArgs e)
@@ -62,52 +63,56 @@ namespace Game_of_Life
 
                     e.Graphics.DrawRectangle(Pens.Black, rect.X, rect.Y, rect.Width, rect.Height);
                 }
-                ////////////////////
-
-
-                
-
-
-                ///////////////////
             }
         }
 
-        private void Update()
+        private void Update1()
         {
-
-
             for (int x = 0; x < universe.GetLength(0); x++) //X-Axis
             {
                 for (int y = 0; y < universe.GetLength(1); y++) //Y-Axis
                 {
-                    int count = 0;
-                    //Check top
-                    if (universe[x, y - 1] == true)
-                        count++;
-                    //Check top-right
-                    if (universe[x+1, y - 1] == true)
-                        count++;
-                    //Check right
-                    if (universe[x+1, y] == true)
-                        count++;
-                    //Check bottom-right
-                    if (universe[x+1, y +1] == true)
-                        count++;
-                    //Check-bottom
-                    if (universe[x, y + 1] == true)
-                        count++;
-                    //Check bottom-left
-                    if (universe[x-1, y + 1] == true)
-                        count++;
-                    //Check left
-                    if (universe[x-1, y] == true)
-                        count++;
-                    //Check top-left
-                    if (universe[x-1, y - 1] == true)
-                        count++;
+                    if (universe[x, y] != null)
+                    {
+                        int count = 0;
+                        //Check top
+                        if (universe[x, y - 1] == true)
+                            count++;
+                        //Check top-right
+                        if (universe[x + 1, y - 1] == true)
+                            count++;
+                        //Check right
+                        if (universe[x + 1, y] == true)
+                            count++;
+                        //Check bottom-right
+                        if (universe[x + 1, y + 1] == true)
+                            count++;
+                        //Check-bottom
+                        if (universe[x, y + 1] == true)
+                            count++;
+                        //Check bottom-left
+                        if (universe[x - 1, y + 1] == true)
+                            count++;
+                        //Check left
+                        if (universe[x - 1, y] == true)
+                            count++;
+                        //Check top-left
+                        if (universe[x - 1, y - 1] == true)
+                            count++;
 
-                    if (count == 2 || count == 3)
-                        spad[x, y] = true;
+                        //Living is dying
+                        if (count > 3)
+                            spad[x, y] = false;
+                        //Living in the next generation
+                        if (count == 2 || count == 3)
+                            spad[x, y] = true;
+                        //Living is dying
+                        if (count == 1 || count == 0)
+                            spad[x, y] = false;
+                        //Dead will Live
+                        if (count == 3)
+                            spad[x, y] = true;
+                    }
                 }
             }
             universe = spad;
