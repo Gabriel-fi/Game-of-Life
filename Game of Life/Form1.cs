@@ -23,9 +23,6 @@ namespace Game_of_Life
         {
             InitializeComponent();
             timer.Interval = 20;
-            timer.Start();
-            timer.Tick += Timer_Tick;
-            Update1();
         }
 
         private void Timer_Tick(object sender, EventArgs e)
@@ -72,7 +69,7 @@ namespace Game_of_Life
             {
                 for (int y = 0; y < universe.GetLength(1); y++) //Y-Axis
                 {
-                    if (universe[x, y] != null)
+                    if (universe[x, y] == true)
                     {
                         int count = 0;
                         //Check top
@@ -146,6 +143,24 @@ namespace Game_of_Life
                 }
             }
             graphicsPanel1.Invalidate();
+        }
+
+        private void PlayButton_Click(object sender, EventArgs e)
+        {
+            timer.Start();
+            timer.Tick += Timer_Tick;
+            Update1();
+        }
+
+        private void PauseButton_Click(object sender, EventArgs e)
+        {
+            timer.Stop();
+        }
+
+        private void NextButton_Click(object sender, EventArgs e)
+        {
+            timer.Tick += Timer_Tick;
+            Update1();
         }
     }
 }
