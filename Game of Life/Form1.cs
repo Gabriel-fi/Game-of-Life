@@ -33,7 +33,7 @@ namespace Game_of_Life
             gens++;
             //Update status
             GenerationStatus.Text = "Generations: " + gens.ToString();
-            Update2();
+            Update1();
             graphicsPanel1.Invalidate();
         }
 
@@ -66,8 +66,9 @@ namespace Game_of_Life
             }
         }
 
-        private static int AdjChecks(bool[,] universe, int ScreenSize, int x, int y, int horizontal, int veritcal)
+        private static int AdjChecks(bool[,] universe, int ScreenSize, int x, int y, int horizontal, int veritcal) 
         {
+            //Checking the bounds and making sure it doesn't crash
             int amt = 0;
 
             int boundsX = x + horizontal;
@@ -80,41 +81,35 @@ namespace Game_of_Life
             }
             return amt;
         }
-        private void Update2()
+        private void Update1()
         {
             int sizeX = universe.GetLength(0);
             int sizeY = universe.GetLength(1);
             int size = 20;
 
-            for (int i = 0; i < sizeX; i++)
-            {
-                for (int t = 0; t < sizeY; t++)
-                {
-                    spad[i, t] = universe[i, t];
-                }
-            }
             for (int x = 0; x < sizeX; x++)
             {
                 for (int y = 0; y < sizeY; y++)
                 {
+                    //Using the class to check the bounds in the grid
                     int count = AdjChecks(universe, size, x, y, -1, 0) + AdjChecks(universe, size, x, y, -1, 1) 
                         + AdjChecks(universe, size, x, y, 0, 1) + AdjChecks(universe, size, x, y, 1, 1) + AdjChecks(universe, size, x, y, 1, 0) 
                         + AdjChecks(universe, size, x, y, 1, -1) + AdjChecks(universe, size, x, y, 0, -1) + AdjChecks(universe, size, x, y, -1, -1);
+
                     bool isAlive = universe[x, y];
                     bool TurnOn = false;
 
+                    //Living in the next generation
                     if (isAlive && (count == 2 || count == 3))
-                    {
                         TurnOn = true;
-                    }
+                    //Dead will Live
                     else if (!isAlive && count == 3)
-                    {
                         TurnOn = true;
-                    }
 
                     spad[x, y] = TurnOn;
                 }
             }
+
             for (int i = 0; i < size; i++)
             {
                 for (int t = 0; t < size; t++)
@@ -122,18 +117,27 @@ namespace Game_of_Life
                     universe[i, t] = spad[i, t];
                 }
             }
+            spad = new bool[20, 20];
+            /*
+            for (int i = 0; i < sizeX; i++)
+            {
+                for (int t = 0; t < sizeY; t++)
+                {
+                    spad[i, t] = universe[i, t];
+                }
+            }*/
         }
         /*
-        private void Update1()
+        private void Update2()
         {
             int sizeX = universe.GetLength(0);
             int sizeY = universe.GetLength(1);
             int count = 0;
-            for (int a = 0; a < sizeX; a++)
+            for (int i = 0; i < sizeX; i++)
             {
-                for (int i = 0; i < sizeY; i++)
+                for (int t = 0; t < sizeY; t++)
                 {
-                    spad[a, i] = universe[a, i];
+                    spad[i, t] = universe[i, t];
                     
                 }
             }
@@ -208,7 +212,7 @@ namespace Game_of_Life
                     float x = e.X / w;
                     float y = e.Y / h;
 
-
+                    //If already selected, Unselect!
                     universe[(int)x, (int)y] = !universe[(int)x, (int)y];
                 }
                 graphicsPanel1.Invalidate();
@@ -219,6 +223,7 @@ namespace Game_of_Life
 
         private void newToolStripMenuItem1_Click(object sender, EventArgs e)
         {
+            //Reset
             for (int x = 0; x < universe.GetLength(0); x++) //X-Axis
             {
                 for (int y = 0; y < universe.GetLength(1); y++) //Y-Axis
@@ -244,17 +249,23 @@ namespace Game_of_Life
 
         private void NextButton_Click(object sender, EventArgs e)
         {
-            //Calculate the new Generation
+            //Tick, but only once
             gens++;
-            //Update status
             GenerationStatus.Text = "Generations: " + gens.ToString();
-            Update2();
+            Update1();
             graphicsPanel1.Invalidate();
         }
 
         private void newToolStripButton_Click(object sender, EventArgs e)
         {
+            //Access New
             newToolStripMenuItem1_Click(sender, e);
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AboutBox1 about = new AboutBox1();
+            about.ShowDialog();
         }
     }
 }
