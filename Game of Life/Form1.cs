@@ -218,7 +218,6 @@ namespace Game_of_Life
                 graphicsPanel1.Invalidate();
             }
             catch (IndexOutOfRangeException) { }
-
         }
 
         private void newToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -240,11 +239,17 @@ namespace Game_of_Life
         private void PlayButton_Click(object sender, EventArgs e)
         {
             timer.Start();
+            //Perhaps change this in the future
+            PlayButton.Enabled = false;
+            NextButton.Enabled = false;
         }
 
         private void PauseButton_Click(object sender, EventArgs e)
         {
             timer.Stop();
+            //Perhaps change this in the future
+            PlayButton.Enabled = true;
+            NextButton.Enabled = true;
         }
 
         private void NextButton_Click(object sender, EventArgs e)
@@ -266,6 +271,21 @@ namespace Game_of_Life
         {
             AboutBox1 about = new AboutBox1();
             about.ShowDialog();
+        }
+
+        private void Run_Start_Click(object sender, EventArgs e)
+        {
+            PlayButton_Click(sender, e);
+        }
+
+        private void Run_Pause_Click(object sender, EventArgs e)
+        {
+            PauseButton_Click(sender, e);
+        }
+
+        private void Run_Next_Click(object sender, EventArgs e)
+        {
+            NextButton_Click(sender, e);
         }
     }
 }
