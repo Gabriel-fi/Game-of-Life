@@ -86,17 +86,18 @@ namespace Game_of_Life
             int sizeX = universe.GetLength(0);
             int sizeY = universe.GetLength(1);
             int size = 20;
+            bool isAlive;
 
-            for (int x = 0; x < sizeX; x++)
+            for (int x = 0; x < sizeX; x++) //X-Axis
             {
-                for (int y = 0; y < sizeY; y++)
+                for (int y = 0; y < sizeY; y++) //Y-Axis
                 {
                     //Using the class to check the bounds in the grid
                     int count = AdjChecks(universe, size, x, y, -1, 0) + AdjChecks(universe, size, x, y, -1, 1) 
                         + AdjChecks(universe, size, x, y, 0, 1) + AdjChecks(universe, size, x, y, 1, 1) + AdjChecks(universe, size, x, y, 1, 0) 
                         + AdjChecks(universe, size, x, y, 1, -1) + AdjChecks(universe, size, x, y, 0, -1) + AdjChecks(universe, size, x, y, -1, -1);
 
-                    bool isAlive = universe[x, y];
+                    isAlive = universe[x, y];
                     bool TurnOn = false;
 
                     //Living in the next generation
@@ -232,6 +233,8 @@ namespace Game_of_Life
             }
             timer.Stop();
             gens = 0;
+            PlayButton.Enabled = true;
+            NextButton.Enabled = true;
             GenerationStatus.Text = "Generations: " + gens.ToString();
             graphicsPanel1.Invalidate();
         }
