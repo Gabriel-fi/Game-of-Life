@@ -16,8 +16,9 @@ namespace Game_of_Life
         bool[,] spad = new bool[40, 40];
         Timer timer = new Timer();
         int gens = 0;
+        Color color = Color.DodgerBlue;
 
-        //To-Do: fix the timer, floats, ...
+        //To-Do: Touch on color changing
 
         public Form1()
         {
@@ -66,7 +67,7 @@ namespace Game_of_Life
             }
         }
 
-        private static int AdjChecks(bool[,] universe, int ScreenSize, int x, int y, int horizontal, int veritcal) 
+        private static int AdjChecks(bool[,] universe, int ScreenSize, int x, int y, int horizontal, int veritcal)
         {
             //Checking the bounds and making sure it doesn't crash
             int amt = 0;
@@ -93,8 +94,8 @@ namespace Game_of_Life
                 for (int y = 0; y < sizeY; y++) //Y-Axis
                 {
                     //Using the class to check the bounds in the grid
-                    int count = AdjChecks(universe, size, x, y, -1, 0) + AdjChecks(universe, size, x, y, -1, 1) 
-                        + AdjChecks(universe, size, x, y, 0, 1) + AdjChecks(universe, size, x, y, 1, 1) + AdjChecks(universe, size, x, y, 1, 0) 
+                    int count = AdjChecks(universe, size, x, y, -1, 0) + AdjChecks(universe, size, x, y, -1, 1)
+                        + AdjChecks(universe, size, x, y, 0, 1) + AdjChecks(universe, size, x, y, 1, 1) + AdjChecks(universe, size, x, y, 1, 0)
                         + AdjChecks(universe, size, x, y, 1, -1) + AdjChecks(universe, size, x, y, 0, -1) + AdjChecks(universe, size, x, y, -1, -1);
 
                     isAlive = universe[x, y];
@@ -119,6 +120,9 @@ namespace Game_of_Life
                 }
             }
             spad = new bool[20, 20];
+
+            //Old Code
+            #region
             /*
             for (int i = 0; i < sizeX; i++)
             {
@@ -202,6 +206,8 @@ namespace Game_of_Life
             
         }
         */
+        #endregion 
+
         private void graphicsPanel1_MouseClick(object sender, MouseEventArgs e)
         {
             float w = graphicsPanel1.ClientSize.Width / universe.GetLength(0);
@@ -221,6 +227,39 @@ namespace Game_of_Life
             catch (IndexOutOfRangeException) { }
         }
 
+        
+
+        private void PlayButton_Click(object sender, EventArgs e)
+        {
+            timer.Start();
+            //Perhaps change this in the future
+            PlayButton.Enabled = false;
+            NextButton.Enabled = false;
+            Run_Start.Enabled = false;
+            Run_Next.Enabled = false;
+        }
+
+        private void PauseButton_Click(object sender, EventArgs e)
+        {
+            timer.Stop();
+            //Perhaps change this in the future
+            PlayButton.Enabled = true;
+            NextButton.Enabled = true;
+            Run_Start.Enabled = true;
+            Run_Next.Enabled = true;
+        }
+
+        private void NextButton_Click(object sender, EventArgs e)
+        {
+            //Tick, but only once
+            gens++;
+            GenerationStatus.Text = "Generations: " + gens.ToString();
+            Update1();
+            graphicsPanel1.Invalidate();
+        }
+
+        //ToolStripts & ect.
+        #region
         private void newToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             //Reset
@@ -236,31 +275,6 @@ namespace Game_of_Life
             PlayButton.Enabled = true;
             NextButton.Enabled = true;
             GenerationStatus.Text = "Generations: " + gens.ToString();
-            graphicsPanel1.Invalidate();
-        }
-
-        private void PlayButton_Click(object sender, EventArgs e)
-        {
-            timer.Start();
-            //Perhaps change this in the future
-            PlayButton.Enabled = false;
-            NextButton.Enabled = false;
-        }
-
-        private void PauseButton_Click(object sender, EventArgs e)
-        {
-            timer.Stop();
-            //Perhaps change this in the future
-            PlayButton.Enabled = true;
-            NextButton.Enabled = true;
-        }
-
-        private void NextButton_Click(object sender, EventArgs e)
-        {
-            //Tick, but only once
-            gens++;
-            GenerationStatus.Text = "Generations: " + gens.ToString();
-            Update1();
             graphicsPanel1.Invalidate();
         }
 
@@ -289,6 +303,14 @@ namespace Game_of_Life
         private void Run_Next_Click(object sender, EventArgs e)
         {
             NextButton_Click(sender, e);
+        }
+        #endregion
+        private void colorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ColorDialog dlg = new ColorDialog();
+            dlg.Color = color;
+            if (DialogResult.OK == dlg.ShowDialog())
+                color = dlg.Color;
         }
     }
 }
