@@ -16,7 +16,7 @@ namespace Game_of_Life
         bool[,] spad = new bool[40, 40];
         Timer timer = new Timer();
         int gens = 0;
-        Color color = Color.DodgerBlue;
+        SolidBrush color = new SolidBrush(Properties.Settings.Default.CellColor);
 
         //To-Do: Touch on color changing
 
@@ -59,7 +59,7 @@ namespace Game_of_Life
 
                     if (universe[(int)x, (int)y] == true)
                     {
-                        e.Graphics.FillRectangle(Brushes.DodgerBlue, rect.X, rect.Y, rect.Width, rect.Height);
+                        e.Graphics.FillRectangle(color, rect.X, rect.Y, rect.Width, rect.Height);
                     }
 
                     e.Graphics.DrawRectangle(Pens.Black, rect.X, rect.Y, rect.Width, rect.Height);
@@ -227,7 +227,7 @@ namespace Game_of_Life
             catch (IndexOutOfRangeException) { }
         }
 
-        
+
 
         private void PlayButton_Click(object sender, EventArgs e)
         {
@@ -308,9 +308,32 @@ namespace Game_of_Life
         private void colorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ColorDialog dlg = new ColorDialog();
-            dlg.Color = color;
+            dlg.Color = color.Color;
             if (DialogResult.OK == dlg.ShowDialog())
-                color = dlg.Color;
+                color.Color = dlg.Color;
+            graphicsPanel1.Invalidate();
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Properties.Settings.Default.CellColor = color.Color;
+            Properties.Settings.Default.Save();
+        }
+
+        private void resetSettingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Reset();
+            color.Color = Properties.Settings.Default.CellColor;
+
+            graphicsPanel1.Invalidate();
+        }
+
+        private void reloadSettingsToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Reload();
+            color.Color = Properties.Settings.Default.CellColor;
+
+            graphicsPanel1.Invalidate();
         }
     }
 }
