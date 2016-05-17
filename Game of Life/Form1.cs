@@ -23,6 +23,7 @@ namespace Game_of_Life
         public Form1()
         {
             InitializeComponent();
+            GenerationStatus.Text = "Generations: " + gens.ToString();
             timer.Interval = 70;
             timer.Tick += Timer_Tick;
             timer.Stop();
@@ -334,6 +335,12 @@ namespace Game_of_Life
             color.Color = Properties.Settings.Default.CellColor;
 
             graphicsPanel1.Invalidate();
+        }
+
+        private void OptionsToolStrip_Click(object sender, EventArgs e)
+        {
+            Options options = new Options();
+            options.ShowDialog();
         }
     }
 }
