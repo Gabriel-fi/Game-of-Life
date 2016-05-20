@@ -13,6 +13,7 @@ namespace Game_of_Life
     public partial class Options : Form
     {
         Color color;
+        //Form1 main;
         public Options()
         {
             InitializeComponent();
@@ -20,23 +21,22 @@ namespace Game_of_Life
         }
 
         //Event Handlers
-        public event EventHandler<ApplyEventArgs> FinalizeOptions;
+        //public event EventHandler<ApplyEventArgs> FinalizeOptions;
 
-        public class ApplyEventArgs : EventArgs
+        public Color Color
         {
-            public Color Color
-            {
-                get; set;
-            }
+            get { return CellColorButton.BackColor; }
+            set { CellColorButton.BackColor = value; }
         }
 
         private void OkButton_Click(object sender, EventArgs e)
         {
-            ApplyEventArgs temp = new ApplyEventArgs();
-            //temp.Color = new Size(GetWidth, GetHeight);
-            FinalizeOptions(this, temp);
+            
+            //ApplyEventArgs temp = new ApplyEventArgs();
+            ////temp.Color = new Size(GetWidth, GetHeight);
+            //FinalizeOptions(this, temp);
         }
-        
+
         //Normal stuff
         private void CellColorButton_Click(object sender, EventArgs e)
         {

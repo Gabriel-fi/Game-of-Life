@@ -17,6 +17,8 @@ namespace Game_of_Life
         Timer timer = new Timer();
         int gens = 0;
         SolidBrush color = new SolidBrush(Properties.Settings.Default.CellColor);
+        Random rand;
+        SeedForm seed = new SeedForm();
 
         //To-Do: Touch on color changing
 
@@ -38,6 +40,8 @@ namespace Game_of_Life
             Update1();
             graphicsPanel1.Invalidate();
         }
+
+
 
         private void exitToolStripMenuItem1_Click(object sender, EventArgs e)
         {
@@ -340,7 +344,74 @@ namespace Game_of_Life
         private void OptionsToolStrip_Click(object sender, EventArgs e)
         {
             Options options = new Options();
+
             options.ShowDialog();
         }
+        //Random
+        #region
+        private void fromTimeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            rand = new Random();
+            for (int x = 0; x < universe.GetLength(0); x++) //X-Axis
+            {
+                for (int y = 0; y < universe.GetLength(1); y++) //Y-Axis
+                {
+                    int randomize = rand.Next(0, 2);
+                    if (randomize == 1)
+                        universe[x, y] = false;
+                    else
+                        universe[x, y] = true;
+                }
+            }
+            graphicsPanel1.Invalidate();
+        }
+
+        private void fromNewSeedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (DialogResult.OK == seed.ShowDialog())
+            {
+                rand = new Random(seed.Value);
+
+                for (int x = 0; x < universe.GetLength(0); x++) //X-Axis
+                {
+                    for (int y = 0; y < universe.GetLength(1); y++) //Y-Axis
+                    {
+                        int randomize = rand.Next() % 2;
+                        if (randomize == 1)
+                            universe[x, y] = false;
+                        else
+                            universe[x, y] = true;
+                    }
+                }
+                graphicsPanel1.Invalidate();
+            }
+        }
+
+        private void fromCurrentSeedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            rand = new Random(seed.Value);
+
+            for (int x = 0; x < universe.GetLength(0); x++) //X-Axis
+            {
+                for (int y = 0; y < universe.GetLength(1); y++) //Y-Axis
+                {
+                    int randomize = rand.Next() % 2;
+                    if (randomize == 1)
+                        universe[x, y] = false;
+                    else
+                        universe[x, y] = true;
+                }
+            }
+            graphicsPanel1.Invalidate();
+        }
+        #endregion
+
+        //Old Code
+        //private void Options_FinalizeClick(object sender, Options.ApplyEventArgs e)
+        //{
+        //arr = new Bitmap[e.NewSize.Width, e.NewSize.Height];
+        //throw new NotImplementedException();
+        //    graphicsPanel1.Invalidate();
+        // }
     }
 }
