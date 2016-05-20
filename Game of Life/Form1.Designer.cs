@@ -79,6 +79,8 @@
             this.nextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.colorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.CellStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.randomFromTimeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.graphicsPanel1 = new Game_of_Life.GraphicsPanel();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -426,7 +428,8 @@
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.GenerationStatus});
+            this.GenerationStatus,
+            this.CellStatus});
             this.statusStrip1.Location = new System.Drawing.Point(0, 386);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(490, 22);
@@ -436,8 +439,8 @@
             // GenerationStatus
             // 
             this.GenerationStatus.Name = "GenerationStatus";
-            this.GenerationStatus.Size = new System.Drawing.Size(118, 17);
-            this.GenerationStatus.Text = "toolStripStatusLabel1";
+            this.GenerationStatus.Size = new System.Drawing.Size(70, 17);
+            this.GenerationStatus.Text = "Generations";
             // 
             // contextMenuStrip1
             // 
@@ -455,29 +458,34 @@
             this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
             this.clearToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.clearToolStripMenuItem.Text = "Clear";
+            this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
             // 
             // startToolStripMenuItem
             // 
             this.startToolStripMenuItem.Name = "startToolStripMenuItem";
             this.startToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.startToolStripMenuItem.Text = "Start";
+            this.startToolStripMenuItem.Click += new System.EventHandler(this.startToolStripMenuItem_Click);
             // 
             // pauseToolStripMenuItem
             // 
             this.pauseToolStripMenuItem.Name = "pauseToolStripMenuItem";
             this.pauseToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.pauseToolStripMenuItem.Text = "Pause";
+            this.pauseToolStripMenuItem.Click += new System.EventHandler(this.pauseToolStripMenuItem_Click);
             // 
             // nextToolStripMenuItem
             // 
             this.nextToolStripMenuItem.Name = "nextToolStripMenuItem";
             this.nextToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.nextToolStripMenuItem.Text = "Next";
+            this.nextToolStripMenuItem.Click += new System.EventHandler(this.nextToolStripMenuItem_Click);
             // 
             // optionsToolStripMenuItem1
             // 
             this.optionsToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.colorToolStripMenuItem});
+            this.colorToolStripMenuItem,
+            this.randomFromTimeToolStripMenuItem});
             this.optionsToolStripMenuItem1.Image = ((System.Drawing.Image)(resources.GetObject("optionsToolStripMenuItem1.Image")));
             this.optionsToolStripMenuItem1.Name = "optionsToolStripMenuItem1";
             this.optionsToolStripMenuItem1.Size = new System.Drawing.Size(148, 22);
@@ -486,9 +494,22 @@
             // colorToolStripMenuItem
             // 
             this.colorToolStripMenuItem.Name = "colorToolStripMenuItem";
-            this.colorToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
-            this.colorToolStripMenuItem.Text = "Color";
+            this.colorToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+            this.colorToolStripMenuItem.Text = "Cell Color";
             this.colorToolStripMenuItem.Click += new System.EventHandler(this.colorToolStripMenuItem_Click);
+            // 
+            // CellStatus
+            // 
+            this.CellStatus.Name = "CellStatus";
+            this.CellStatus.Size = new System.Drawing.Size(56, 17);
+            this.CellStatus.Text = "Live Cells";
+            // 
+            // randomFromTimeToolStripMenuItem
+            // 
+            this.randomFromTimeToolStripMenuItem.Name = "randomFromTimeToolStripMenuItem";
+            this.randomFromTimeToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+            this.randomFromTimeToolStripMenuItem.Text = "Random (From Time)";
+            this.randomFromTimeToolStripMenuItem.Click += new System.EventHandler(this.randomFromTimeToolStripMenuItem_Click);
             // 
             // graphicsPanel1
             // 
@@ -579,6 +600,8 @@
         private System.Windows.Forms.ToolStripMenuItem colorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem resetSettingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem reloadSettingsToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripStatusLabel CellStatus;
+        private System.Windows.Forms.ToolStripMenuItem randomFromTimeToolStripMenuItem;
     }
 }
 

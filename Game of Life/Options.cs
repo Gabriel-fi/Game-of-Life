@@ -29,12 +29,27 @@ namespace Game_of_Life
             set { CellColorButton.BackColor = value; }
         }
 
+        public int Time
+        {
+            get { return (int)TimeUD.Value; }
+            set { TimeUD.Value = value; }
+        }
+
+        public int UniverseWidth
+        {
+            get { return (int)WidthUD.Value; }
+            set { WidthUD.Value = value; }
+        }
+
+        public int UniverseHeight
+        {
+            get { return (int)HeightUD.Value; }
+            set { HeightUD.Value = value; }
+        }
+
         private void OkButton_Click(object sender, EventArgs e)
         {
             
-            //ApplyEventArgs temp = new ApplyEventArgs();
-            ////temp.Color = new Size(GetWidth, GetHeight);
-            //FinalizeOptions(this, temp);
         }
 
         //Normal stuff
