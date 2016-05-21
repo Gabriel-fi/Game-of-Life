@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Game_of_Life
 {
@@ -18,12 +19,12 @@ namespace Game_of_Life
         int sizeY;
         int liveCount = 0;
         int gens = 0;
+        bool IsGridVisible = true;
         Timer timer = new Timer();
         SolidBrush color = new SolidBrush(Properties.Settings.Default.CellColor);
         Random rand;
         SeedForm seed = new SeedForm();
 
-        //To-Do: Touch on color changing
 
         public Form1()
         {
@@ -39,20 +40,29 @@ namespace Game_of_Life
         {
             //Calculate the new Generation
             gens++;
+            liveCount = 0;
+            Update1();
+            for (int x = 0; x < universe.GetLength(0); x++) //X-Axis
+            {
+                for (int y = 0; y < universe.GetLength(1); y++) //Y-Axis
+                {
+                    if (universe[x, y] == true)
+                        liveCount++;
+                }
+            }
             //Update status
             GenerationStatus.Text = "Generations: " + gens.ToString();
-            Update1();
+            CellStatus.Text = "Live Cells: " + liveCount.ToString();
             graphicsPanel1.Invalidate();
         }
-
-
 
         private void exitToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
-        //Paint Universe
+        //GraphicsPanel
+        #region
         private void graphicsPanel1_Paint(object sender, PaintEventArgs e)
         {
             float w = (float)graphicsPanel1.ClientSize.Width / universe.GetLength(0);
@@ -71,11 +81,40 @@ namespace Game_of_Life
                     {
                         e.Graphics.FillRectangle(color, rect.X, rect.Y, rect.Width, rect.Height);
                     }
-
-                    e.Graphics.DrawRectangle(Pens.Black, rect.X, rect.Y, rect.Width, rect.Height);
+                    if (IsGridVisible == true)
+                    {
+                        e.Graphics.DrawRectangle(Pens.Black, rect.X, rect.Y, rect.Width, rect.Height);
+                    }
                 }
             }
         }
+
+        private void graphicsPanel1_MouseClick(object sender, MouseEventArgs e)
+        {
+            float w = (float)graphicsPanel1.ClientSize.Width / universe.GetLength(0);
+            float h = (float)graphicsPanel1.ClientSize.Height / universe.GetLength(1);
+            try
+            {
+                if (e.Button == MouseButtons.Left)
+                {
+                    float x = e.X / w;
+                    float y = e.Y / h;
+
+                    //If already selected, Unselect!
+                    universe[(int)x, (int)y] = !universe[(int)x, (int)y];
+
+                    //Live Cell count. Check for subtraction
+                    if (universe[(int)x, (int)y] == false && liveCount > 0)
+                        liveCount--;
+                    else if(universe[(int)x, (int)y] == true)
+                        liveCount++;
+                }
+                CellStatus.Text = "Live Cells: " + liveCount.ToString();
+                graphicsPanel1.Invalidate();
+            }
+            catch (IndexOutOfRangeException) { }
+        }
+        #endregion
 
         //Game Logic
         #region
@@ -94,6 +133,7 @@ namespace Game_of_Life
             }
             return amt;
         }
+
         private void Update1()
         {
             int sizeX = universe.GetLength(0);
@@ -141,25 +181,6 @@ namespace Game_of_Life
         }
         #endregion
 
-        private void graphicsPanel1_MouseClick(object sender, MouseEventArgs e)
-        {
-            float w = graphicsPanel1.ClientSize.Width / universe.GetLength(0);
-            float h = graphicsPanel1.ClientSize.Height / universe.GetLength(1);
-            try
-            {
-                if (e.Button == MouseButtons.Left)
-                {
-                    float x = e.X / w;
-                    float y = e.Y / h;
-
-                    //If already selected, Unselect!
-                    universe[(int)x, (int)y] = !universe[(int)x, (int)y];
-                }
-                graphicsPanel1.Invalidate();
-            }
-            catch (IndexOutOfRangeException) { }
-        }
-
         //Play/Pause/Next
         #region
         private void PlayButton_Click(object sender, EventArgs e)
@@ -189,10 +210,11 @@ namespace Game_of_Life
         private void NextButton_Click(object sender, EventArgs e)
         {
             //Tick, but only once
-            gens++;
-            GenerationStatus.Text = "Generations: " + gens.ToString();
-            Update1();
-            graphicsPanel1.Invalidate();
+            //gens++;
+            //GenerationStatus.Text = "Generations: " + gens.ToString();
+            //Update1();
+            //graphicsPanel1.Invalidate();
+            Timer_Tick(sender, e);
         }
         #endregion
 
@@ -277,6 +299,7 @@ namespace Game_of_Life
             graphicsPanel1.Invalidate();
         }
 
+        //Saving stuff when user closes
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
             Properties.Settings.Default.CellColor = color.Color;
@@ -307,16 +330,18 @@ namespace Game_of_Life
             options.UniverseHeight = sizeY;
             options.UniverseWidth = sizeX;
             options.Time = timer.Interval;
-            if(DialogResult.OK == options.ShowDialog())
+            if (DialogResult.OK == options.ShowDialog())
             {
                 timer.Interval = options.Time;
                 sizeY = options.UniverseHeight;
                 sizeX = options.UniverseWidth;
                 universe = new bool[sizeX, sizeY];
                 spad = new bool[sizeX, sizeY];
+                newToolStripMenuItem1_Click(sender, e);
             }
             graphicsPanel1.Invalidate();
         }
+
         //Random
         #region
         private void fromTimeToolStripMenuItem_Click(object sender, EventArgs e)
@@ -381,12 +406,96 @@ namespace Game_of_Life
         }
         #endregion
 
-        //Old Code
-        //private void Options_FinalizeClick(object sender, Options.ApplyEventArgs e)
-        //{
-        //arr = new Bitmap[e.NewSize.Width, e.NewSize.Height];
-        //throw new NotImplementedException();
-        //    graphicsPanel1.Invalidate();
-        // }
+        //Save + Open
+        #region
+        private void saveToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog dlg = new SaveFileDialog();
+            dlg.Filter = "All Files|*.*|Cells|*.cells";
+            dlg.FilterIndex = 2; dlg.DefaultExt = "cells";
+
+
+            if (DialogResult.OK == dlg.ShowDialog())
+            {
+                StreamWriter writer = new StreamWriter(dlg.FileName);
+
+                for (int y = 0; y < universe.GetLength(1); y++)
+                {
+                    String currentRow = string.Empty;
+                    for (int x = 0; x < universe.GetLength(0); x++)
+                    {
+                        if (universe[x, y] == true)
+                            writer.Write("O");
+                        else
+                            writer.Write(".");
+                    }
+                    writer.WriteLine();
+                }
+                writer.Close();
+            }
+        }
+
+        private void openToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.Filter = "All Files|*.*|Cells|*.cells";
+            dlg.FilterIndex = 2;
+
+            if (DialogResult.OK == dlg.ShowDialog())
+            {
+                StreamReader reader = new StreamReader(dlg.FileName);
+                int maxWidth = 0;
+                int maxHeight = 0;
+                while (!reader.EndOfStream)
+                {
+                    string row = reader.ReadLine();
+                    //while (row != null)
+                    for (int i = 0; i < row.Length; i++)
+                    {
+                        if (row.Length > universe.GetLength(0))
+                            maxWidth = row.Length;
+
+                        maxHeight++;
+                    }
+                }
+                universe = new bool[maxWidth, maxHeight];
+                spad = new bool[maxWidth, maxHeight];
+                reader.BaseStream.Seek(0, SeekOrigin.Begin);
+                while (!reader.EndOfStream)
+                {
+                    string row = reader.ReadLine();
+                    for (int xPos = 0; xPos < row.Length; xPos++)
+                    {
+                        if (row[xPos] == 'O')
+                            universe[xPos, 0] = true;
+                        else if (row[xPos] == '.')
+                            universe[xPos, 0] = false;
+                    }
+                }
+                reader.Close();
+            }
+        }
+
+        private void saveToolStripButton_Click(object sender, EventArgs e)
+        {
+            saveToolStripMenuItem1_Click(sender, e);
+        }
+
+        private void openToolStripButton_Click(object sender, EventArgs e)
+        {
+            openToolStripMenuItem1_Click(sender, e);
+        }
+        #endregion
+
+        //View Options
+        private void gridVisibleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (gridVisibleToolStripMenuItem.Checked == false)
+                IsGridVisible = false;
+            else
+                IsGridVisible = true;
+
+            graphicsPanel1.Invalidate();
+        }
     }
 }

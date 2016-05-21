@@ -133,6 +133,7 @@
             this.openToolStripMenuItem1.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
             this.openToolStripMenuItem1.Size = new System.Drawing.Size(146, 22);
             this.openToolStripMenuItem1.Text = "&Open";
+            this.openToolStripMenuItem1.Click += new System.EventHandler(this.openToolStripMenuItem1_Click);
             // 
             // toolStripSeparator
             // 
@@ -147,6 +148,7 @@
             this.saveToolStripMenuItem1.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
             this.saveToolStripMenuItem1.Size = new System.Drawing.Size(146, 22);
             this.saveToolStripMenuItem1.Text = "&Save";
+            this.saveToolStripMenuItem1.Click += new System.EventHandler(this.saveToolStripMenuItem1_Click);
             // 
             // toolStripSeparator1
             // 
@@ -253,18 +255,28 @@
             // 
             // gridVisibleToolStripMenuItem
             // 
+            this.gridVisibleToolStripMenuItem.Checked = true;
+            this.gridVisibleToolStripMenuItem.CheckOnClick = true;
+            this.gridVisibleToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.gridVisibleToolStripMenuItem.Name = "gridVisibleToolStripMenuItem";
             this.gridVisibleToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
             this.gridVisibleToolStripMenuItem.Text = "Grid Visible";
+            this.gridVisibleToolStripMenuItem.Click += new System.EventHandler(this.gridVisibleToolStripMenuItem_Click);
             // 
             // headsUpVisibleToolStripMenuItem
             // 
+            this.headsUpVisibleToolStripMenuItem.Checked = true;
+            this.headsUpVisibleToolStripMenuItem.CheckOnClick = true;
+            this.headsUpVisibleToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.headsUpVisibleToolStripMenuItem.Name = "headsUpVisibleToolStripMenuItem";
             this.headsUpVisibleToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
             this.headsUpVisibleToolStripMenuItem.Text = "Heads Up Visible";
             // 
             // neightboorToolStripMenuItem
             // 
+            this.neightboorToolStripMenuItem.Checked = true;
+            this.neightboorToolStripMenuItem.CheckOnClick = true;
+            this.neightboorToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.neightboorToolStripMenuItem.Name = "neightboorToolStripMenuItem";
             this.neightboorToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
             this.neightboorToolStripMenuItem.Text = "Neighbor Count Visible";
@@ -380,6 +392,7 @@
             this.openToolStripButton.Name = "openToolStripButton";
             this.openToolStripButton.Size = new System.Drawing.Size(23, 22);
             this.openToolStripButton.Text = "&Open";
+            this.openToolStripButton.Click += new System.EventHandler(this.openToolStripButton_Click);
             // 
             // saveToolStripButton
             // 
@@ -389,6 +402,7 @@
             this.saveToolStripButton.Name = "saveToolStripButton";
             this.saveToolStripButton.Size = new System.Drawing.Size(23, 22);
             this.saveToolStripButton.Text = "&Save";
+            this.saveToolStripButton.Click += new System.EventHandler(this.saveToolStripButton_Click);
             // 
             // toolStripSeparator2
             // 
