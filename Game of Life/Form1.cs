@@ -33,6 +33,13 @@ namespace Game_of_Life
             InitializeComponent();
             GenerationStatus.Text = "Generations: " + gens.ToString();
             CellStatus.Text = "Live Cells: " + liveCount.ToString();
+
+            //View Stuff
+            GenLabel.Text = GenerationStatus.Text;
+            CellLabel.Text = CellStatus.Text;
+            BoundLabel.Text = "Boundry Type: Finite";
+            SizeLabel.Text = "Universe Size: {" + 30 + ", " + 30 + "}";
+
             timer.Interval = 70;
             timer.Tick += Timer_Tick;
             timer.Stop();
@@ -45,6 +52,7 @@ namespace Game_of_Life
             Update1();
             //Update status
             GenerationStatus.Text = "Generations: " + gens.ToString();
+            GenLabel.Text = GenerationStatus.Text;
             GetLiveCellCount();
             graphicsPanel1.Invalidate();
         }
@@ -61,6 +69,7 @@ namespace Game_of_Life
                 }
             }
             CellStatus.Text = "Live Cells: " + liveCount.ToString();
+            CellLabel.Text = CellStatus.Text;
         }
 
         private void exitToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -118,6 +127,7 @@ namespace Game_of_Life
                         liveCount++;
                 }
                 CellStatus.Text = "Live Cells: " + liveCount.ToString();
+                CellLabel.Text = CellStatus.Text;
                 graphicsPanel1.Invalidate();
             }
             catch (IndexOutOfRangeException) { }
@@ -354,6 +364,7 @@ namespace Game_of_Life
                 sizeX = options.UniverseWidth;
                 universe = new bool[sizeX, sizeY];
                 spad = new bool[sizeX, sizeY];
+                SizeLabel.Text = "Universe Size: {" + sizeX + ", " + sizeY + "}";
                 color.Color = options.Color;
                 gridColor.Color = options.GridColor;
                 backgroundColor = options.BackgroundColor;
@@ -521,6 +532,26 @@ namespace Game_of_Life
                 IsGridVisible = true;
 
             graphicsPanel1.Invalidate();
+        }
+
+        private void headsUpVisibleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (headsUpVisibleToolStripMenuItem.Checked == false)
+            {
+                GenLabel.Visible = false;
+                CellLabel.Visible = false;
+                BoundLabel.Visible = false;
+                SizeLabel.Visible = false;
+            }
+            else
+            {
+                GenLabel.Visible = true;
+                CellLabel.Visible = true;
+                BoundLabel.Visible = true;
+                SizeLabel.Visible = true;
+            }
+
+                graphicsPanel1.Invalidate();
         }
     }
 }

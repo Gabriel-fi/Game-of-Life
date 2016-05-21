@@ -72,6 +72,7 @@
             this.NextButton = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.GenerationStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.CellStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -79,13 +80,17 @@
             this.nextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.colorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.CellStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.randomFromTimeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.graphicsPanel1 = new Game_of_Life.GraphicsPanel();
+            this.GenLabel = new System.Windows.Forms.Label();
+            this.CellLabel = new System.Windows.Forms.Label();
+            this.BoundLabel = new System.Windows.Forms.Label();
+            this.SizeLabel = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
+            this.graphicsPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -271,6 +276,7 @@
             this.headsUpVisibleToolStripMenuItem.Name = "headsUpVisibleToolStripMenuItem";
             this.headsUpVisibleToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
             this.headsUpVisibleToolStripMenuItem.Text = "Heads Up Visible";
+            this.headsUpVisibleToolStripMenuItem.Click += new System.EventHandler(this.headsUpVisibleToolStripMenuItem_Click);
             // 
             // neightboorToolStripMenuItem
             // 
@@ -456,6 +462,12 @@
             this.GenerationStatus.Size = new System.Drawing.Size(70, 17);
             this.GenerationStatus.Text = "Generations";
             // 
+            // CellStatus
+            // 
+            this.CellStatus.Name = "CellStatus";
+            this.CellStatus.Size = new System.Drawing.Size(56, 17);
+            this.CellStatus.Text = "Live Cells";
+            // 
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -512,12 +524,6 @@
             this.colorToolStripMenuItem.Text = "Cell Color";
             this.colorToolStripMenuItem.Click += new System.EventHandler(this.colorToolStripMenuItem_Click);
             // 
-            // CellStatus
-            // 
-            this.CellStatus.Name = "CellStatus";
-            this.CellStatus.Size = new System.Drawing.Size(56, 17);
-            this.CellStatus.Text = "Live Cells";
-            // 
             // randomFromTimeToolStripMenuItem
             // 
             this.randomFromTimeToolStripMenuItem.Name = "randomFromTimeToolStripMenuItem";
@@ -529,6 +535,10 @@
             // 
             this.graphicsPanel1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.graphicsPanel1.ContextMenuStrip = this.contextMenuStrip1;
+            this.graphicsPanel1.Controls.Add(this.GenLabel);
+            this.graphicsPanel1.Controls.Add(this.CellLabel);
+            this.graphicsPanel1.Controls.Add(this.BoundLabel);
+            this.graphicsPanel1.Controls.Add(this.SizeLabel);
             this.graphicsPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.graphicsPanel1.Location = new System.Drawing.Point(0, 49);
             this.graphicsPanel1.Name = "graphicsPanel1";
@@ -536,6 +546,66 @@
             this.graphicsPanel1.TabIndex = 3;
             this.graphicsPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.graphicsPanel1_Paint);
             this.graphicsPanel1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.graphicsPanel1_MouseClick);
+            // 
+            // GenLabel
+            // 
+            this.GenLabel.AutoSize = true;
+            this.GenLabel.BackColor = System.Drawing.Color.Transparent;
+            this.GenLabel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.GenLabel.Enabled = false;
+            this.GenLabel.Font = new System.Drawing.Font("MS Reference Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.GenLabel.ForeColor = System.Drawing.Color.Maroon;
+            this.GenLabel.Location = new System.Drawing.Point(0, 273);
+            this.GenLabel.Name = "GenLabel";
+            this.GenLabel.Size = new System.Drawing.Size(86, 16);
+            this.GenLabel.TabIndex = 3;
+            this.GenLabel.Text = "Generations";
+            this.GenLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // CellLabel
+            // 
+            this.CellLabel.AutoSize = true;
+            this.CellLabel.BackColor = System.Drawing.Color.Transparent;
+            this.CellLabel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.CellLabel.Enabled = false;
+            this.CellLabel.Font = new System.Drawing.Font("MS Reference Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CellLabel.ForeColor = System.Drawing.Color.Maroon;
+            this.CellLabel.Location = new System.Drawing.Point(0, 289);
+            this.CellLabel.Name = "CellLabel";
+            this.CellLabel.Size = new System.Drawing.Size(75, 16);
+            this.CellLabel.TabIndex = 2;
+            this.CellLabel.Text = "Cell Count";
+            this.CellLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // BoundLabel
+            // 
+            this.BoundLabel.AutoSize = true;
+            this.BoundLabel.BackColor = System.Drawing.Color.Transparent;
+            this.BoundLabel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.BoundLabel.Enabled = false;
+            this.BoundLabel.Font = new System.Drawing.Font("MS Reference Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BoundLabel.ForeColor = System.Drawing.Color.Maroon;
+            this.BoundLabel.Location = new System.Drawing.Point(0, 305);
+            this.BoundLabel.Name = "BoundLabel";
+            this.BoundLabel.Size = new System.Drawing.Size(99, 16);
+            this.BoundLabel.TabIndex = 1;
+            this.BoundLabel.Text = "Boundry Type";
+            this.BoundLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // SizeLabel
+            // 
+            this.SizeLabel.AutoSize = true;
+            this.SizeLabel.BackColor = System.Drawing.Color.Transparent;
+            this.SizeLabel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.SizeLabel.Enabled = false;
+            this.SizeLabel.Font = new System.Drawing.Font("MS Reference Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SizeLabel.ForeColor = System.Drawing.Color.Maroon;
+            this.SizeLabel.Location = new System.Drawing.Point(0, 321);
+            this.SizeLabel.Name = "SizeLabel";
+            this.SizeLabel.Size = new System.Drawing.Size(96, 16);
+            this.SizeLabel.TabIndex = 0;
+            this.SizeLabel.Text = "Universe Size";
+            this.SizeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // Form1
             // 
@@ -557,6 +627,8 @@
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.contextMenuStrip1.ResumeLayout(false);
+            this.graphicsPanel1.ResumeLayout(false);
+            this.graphicsPanel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -616,6 +688,10 @@
         private System.Windows.Forms.ToolStripMenuItem reloadSettingsToolStripMenuItem1;
         private System.Windows.Forms.ToolStripStatusLabel CellStatus;
         private System.Windows.Forms.ToolStripMenuItem randomFromTimeToolStripMenuItem;
+        private System.Windows.Forms.Label GenLabel;
+        private System.Windows.Forms.Label CellLabel;
+        private System.Windows.Forms.Label BoundLabel;
+        private System.Windows.Forms.Label SizeLabel;
     }
 }
 
