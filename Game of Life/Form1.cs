@@ -36,12 +36,9 @@ namespace Game_of_Life
             timer.Stop();
         }
 
-        private void Timer_Tick(object sender, EventArgs e)
+        void GetLiveCellCount()
         {
-            //Calculate the new Generation
-            gens++;
             liveCount = 0;
-            Update1();
             for (int x = 0; x < universe.GetLength(0); x++) //X-Axis
             {
                 for (int y = 0; y < universe.GetLength(1); y++) //Y-Axis
@@ -50,9 +47,17 @@ namespace Game_of_Life
                         liveCount++;
                 }
             }
+            CellStatus.Text = "Live Cells: " + liveCount.ToString();
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            //Calculate the new Generation
+            gens++;
+            Update1();
             //Update status
             GenerationStatus.Text = "Generations: " + gens.ToString();
-            CellStatus.Text = "Live Cells: " + liveCount.ToString();
+            GetLiveCellCount();
             graphicsPanel1.Invalidate();
         }
 
@@ -232,6 +237,7 @@ namespace Game_of_Life
             }
             timer.Stop();
             gens = 0;
+            liveCount = 0;
             PlayButton.Enabled = true;
             NextButton.Enabled = true;
             Run_Start.Enabled = true;
@@ -239,6 +245,7 @@ namespace Game_of_Life
             startToolStripMenuItem.Enabled = true;
             nextToolStripMenuItem.Enabled = true;
             GenerationStatus.Text = "Generations: " + gens.ToString();
+            CellStatus.Text = "Live Cells: " + liveCount.ToString();
             graphicsPanel1.Invalidate();
         }
 
@@ -358,6 +365,7 @@ namespace Game_of_Life
                         universe[x, y] = true;
                 }
             }
+            GetLiveCellCount();
             graphicsPanel1.Invalidate();
         }
 
@@ -378,6 +386,7 @@ namespace Game_of_Life
                             universe[x, y] = true;
                     }
                 }
+                GetLiveCellCount();
                 graphicsPanel1.Invalidate();
             }
         }
@@ -397,6 +406,7 @@ namespace Game_of_Life
                         universe[x, y] = true;
                 }
             }
+            GetLiveCellCount();
             graphicsPanel1.Invalidate();
         }
 
@@ -474,6 +484,8 @@ namespace Game_of_Life
                 }
                 reader.Close();
             }
+            GetLiveCellCount();
+            graphicsPanel1.Invalidate();
         }
 
         private void saveToolStripButton_Click(object sender, EventArgs e)
