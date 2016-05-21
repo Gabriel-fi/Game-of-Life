@@ -22,6 +22,8 @@ namespace Game_of_Life
         bool IsGridVisible = true;
         Timer timer = new Timer();
         SolidBrush color = new SolidBrush(Properties.Settings.Default.CellColor);
+        Pen gridColor = new Pen(Properties.Settings.Default.GridColor);
+        Color backgroundColor = Properties.Settings.Default.Background;
         Random rand;
         SeedForm seed = new SeedForm();
 
@@ -34,6 +36,17 @@ namespace Game_of_Life
             timer.Interval = 70;
             timer.Tick += Timer_Tick;
             timer.Stop();
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            //Calculate the new Generation
+            gens++;
+            Update1();
+            //Update status
+            GenerationStatus.Text = "Generations: " + gens.ToString();
+            GetLiveCellCount();
+            graphicsPanel1.Invalidate();
         }
 
         void GetLiveCellCount()
@@ -50,17 +63,6 @@ namespace Game_of_Life
             CellStatus.Text = "Live Cells: " + liveCount.ToString();
         }
 
-        private void Timer_Tick(object sender, EventArgs e)
-        {
-            //Calculate the new Generation
-            gens++;
-            Update1();
-            //Update status
-            GenerationStatus.Text = "Generations: " + gens.ToString();
-            GetLiveCellCount();
-            graphicsPanel1.Invalidate();
-        }
-
         private void exitToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -70,6 +72,7 @@ namespace Game_of_Life
         #region
         private void graphicsPanel1_Paint(object sender, PaintEventArgs e)
         {
+            graphicsPanel1.BackColor = backgroundColor;
             float w = (float)graphicsPanel1.ClientSize.Width / universe.GetLength(0);
             float h = (float)graphicsPanel1.ClientSize.Height / universe.GetLength(1);
             for (int x = 0; x < universe.GetLength(0); x++) //X-Axis
@@ -88,7 +91,7 @@ namespace Game_of_Life
                     }
                     if (IsGridVisible == true)
                     {
-                        e.Graphics.DrawRectangle(Pens.Black, rect.X, rect.Y, rect.Width, rect.Height);
+                        e.Graphics.DrawRectangle(gridColor, rect.X, rect.Y, rect.Width, rect.Height);
                     }
                 }
             }
@@ -310,6 +313,8 @@ namespace Game_of_Life
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
             Properties.Settings.Default.CellColor = color.Color;
+            Properties.Settings.Default.Background = backgroundColor;
+            Properties.Settings.Default.GridColor = gridColor.Color;
             Properties.Settings.Default.Save();
         }
 
@@ -317,7 +322,8 @@ namespace Game_of_Life
         {
             Properties.Settings.Default.Reset();
             color.Color = Properties.Settings.Default.CellColor;
-
+            backgroundColor = Properties.Settings.Default.Background;
+            gridColor.Color = Properties.Settings.Default.GridColor;
             graphicsPanel1.Invalidate();
         }
 
@@ -325,7 +331,8 @@ namespace Game_of_Life
         {
             Properties.Settings.Default.Reload();
             color.Color = Properties.Settings.Default.CellColor;
-
+            backgroundColor = Properties.Settings.Default.Background;
+            gridColor.Color = Properties.Settings.Default.GridColor;
             graphicsPanel1.Invalidate();
         }
 
@@ -337,6 +344,9 @@ namespace Game_of_Life
             options.UniverseHeight = sizeY;
             options.UniverseWidth = sizeX;
             options.Time = timer.Interval;
+            options.Color = color.Color;
+            options.GridColor = gridColor.Color;
+            options.BackgroundColor = backgroundColor;
             if (DialogResult.OK == options.ShowDialog())
             {
                 timer.Interval = options.Time;
@@ -344,6 +354,9 @@ namespace Game_of_Life
                 sizeX = options.UniverseWidth;
                 universe = new bool[sizeX, sizeY];
                 spad = new bool[sizeX, sizeY];
+                color.Color = options.Color;
+                gridColor.Color = options.GridColor;
+                backgroundColor = options.BackgroundColor;
                 newToolStripMenuItem1_Click(sender, e);
             }
             graphicsPanel1.Invalidate();

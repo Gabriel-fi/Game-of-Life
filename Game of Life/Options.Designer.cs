@@ -202,6 +202,7 @@
             this.BackColorButton.Size = new System.Drawing.Size(48, 24);
             this.BackColorButton.TabIndex = 1;
             this.BackColorButton.UseVisualStyleBackColor = true;
+            this.BackColorButton.Click += new System.EventHandler(this.BackColorButton_Click);
             // 
             // GridColorButton
             // 
@@ -210,6 +211,7 @@
             this.GridColorButton.Size = new System.Drawing.Size(48, 24);
             this.GridColorButton.TabIndex = 0;
             this.GridColorButton.UseVisualStyleBackColor = true;
+            this.GridColorButton.Click += new System.EventHandler(this.GridColorButton_Click);
             // 
             // AdvancedPage
             // 
@@ -257,7 +259,6 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.CancelButton = this.CancelButton;
             this.ClientSize = new System.Drawing.Size(506, 295);
             this.Controls.Add(this.CancelButton);
             this.Controls.Add(this.tabControl1);

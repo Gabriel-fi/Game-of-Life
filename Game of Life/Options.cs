@@ -12,12 +12,16 @@ namespace Game_of_Life
 {
     public partial class Options : Form
     {
-        Color color;
+        Color cell;
+        Color back;
+        Color grid;
         //Form1 main;
         public Options()
         {
             InitializeComponent();
             CellColorButton.BackColor = Properties.Settings.Default.CellColor;
+            BackColorButton.BackColor = Properties.Settings.Default.Background;
+            GridColorButton.BackColor = Properties.Settings.Default.GridColor;
         }
 
         //Event Handlers
@@ -27,6 +31,18 @@ namespace Game_of_Life
         {
             get { return CellColorButton.BackColor; }
             set { CellColorButton.BackColor = value; }
+        }
+
+        public Color GridColor
+        {
+            get { return GridColorButton.BackColor; }
+            set { GridColorButton.BackColor = value; }
+        }
+
+        public Color BackgroundColor
+        {
+            get { return BackColorButton.BackColor; }
+            set { BackColorButton.BackColor = value; }
         }
 
         public int Time
@@ -56,17 +72,37 @@ namespace Game_of_Life
         private void CellColorButton_Click(object sender, EventArgs e)
         {
             ColorDialog dlg = new ColorDialog();
-            dlg.Color = color;
+            dlg.Color = cell;
             if (DialogResult.OK == dlg.ShowDialog())
             {
-                color = dlg.Color;
-                Properties.Settings.Default.CellColor = color;
+                cell = dlg.Color;
+                Properties.Settings.Default.CellColor = cell;
+                CellColorButton.BackColor = cell;
             }
-
-            CellColorButton.BackColor = color;
-            //Properties.Settings.Default.CellColor
         }
 
+        private void BackColorButton_Click(object sender, EventArgs e)
+        {
+            ColorDialog dlg = new ColorDialog();
+            dlg.Color = back;
+            if (DialogResult.OK == dlg.ShowDialog())
+            {
+                back = dlg.Color;
+                Properties.Settings.Default.Background = back;
+                BackColorButton.BackColor = back;
+            }
+        }
 
+        private void GridColorButton_Click(object sender, EventArgs e)
+        {
+            ColorDialog dlg = new ColorDialog();
+            dlg.Color = grid;
+            if (DialogResult.OK == dlg.ShowDialog())
+            {
+                grid = dlg.Color;
+                Properties.Settings.Default.GridColor = grid;
+                GridColorButton.BackColor = grid;
+            }
+        }
     }
 }
