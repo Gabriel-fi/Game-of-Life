@@ -136,15 +136,15 @@ namespace Game_of_Life
 
         //Game Logic
         #region
-        private static int AdjChecks(bool[,] universe, int ScreenSize, int x, int y, int horizontal, int veritcal)
+        private static int AdjChecks(bool[,] universe, int ScreenSizeX, int ScreenSizeY, int x, int y, int horizontal, int veritcal)
         {
             //Checking the bounds and making sure it doesn't crash
             int amt = 0;
 
             int boundsX = x + horizontal;
             int boundsY = y + veritcal;
-            bool outOfBounds = boundsX < 0 || boundsX >= ScreenSize || boundsY < 0
-                || boundsY >= ScreenSize;
+            bool outOfBounds = boundsX < 0 || boundsX >= ScreenSizeX | boundsY < 0
+                || boundsY >= ScreenSizeY;
             if (!outOfBounds)
             {
                 amt = universe[x + horizontal, y + veritcal] ? 1 : 0;
@@ -159,14 +159,14 @@ namespace Game_of_Life
             //int size = 20;
             bool isAlive;
 
-            for (int x = 0; x < sizeX; x++) //X-Axis
+            for (int y = 0; y < sizeY; y++) //X-Axis
             {
-                for (int y = 0; y < sizeY; y++) //Y-Axis
+                for (int x = 0; x < sizeX; x++) //Y-Axis
                 {
                     //Using the class to check the bounds in the grid
-                    int count = AdjChecks(universe, sizeX, x, y, -1, 0) + AdjChecks(universe, sizeX, x, y, -1, 1)
-                        + AdjChecks(universe, sizeX, x, y, 0, 1) + AdjChecks(universe, sizeX, x, y, 1, 1) + AdjChecks(universe, sizeX, x, y, 1, 0)
-                        + AdjChecks(universe, sizeX, x, y, 1, -1) + AdjChecks(universe, sizeX, x, y, 0, -1) + AdjChecks(universe, sizeX, x, y, -1, -1);
+                    int count = AdjChecks(universe, sizeX, sizeY, x, y, -1, 0) + AdjChecks(universe, sizeX, sizeY, x, y, -1, 1)
+                        + AdjChecks(universe, sizeX, sizeY, x, y, 0, 1) + AdjChecks(universe, sizeX, sizeY, x, y, 1, 1) + AdjChecks(universe, sizeX, sizeY, x, y, 1, 0)
+                        + AdjChecks(universe, sizeX, sizeY, x, y, 1, -1) + AdjChecks(universe, sizeX, sizeY, x, y, 0, -1) + AdjChecks(universe, sizeX, sizeY, x, y, -1, -1);
 
                     isAlive = universe[x, y];
                     bool TurnOn = false;
@@ -483,14 +483,11 @@ namespace Game_of_Life
                 while (!reader.EndOfStream)
                 {
                     string row = reader.ReadLine();
-                    //while (row != null)
                     if(row.Contains("O")|row.Contains("."))
                     {
                         maxHeight++;
                         maxWidth++;
                     }
-                    //else
-                    //--
                     if (row.Length > maxWidth)
                         maxWidth++;
                     if (row.Length < maxWidth)
@@ -532,7 +529,7 @@ namespace Game_of_Life
         }
         #endregion
 
-        //View Options
+        //View-Options
         private void gridVisibleToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (gridVisibleToolStripMenuItem.Checked == false)
