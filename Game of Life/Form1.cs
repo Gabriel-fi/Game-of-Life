@@ -484,27 +484,36 @@ namespace Game_of_Life
                 {
                     string row = reader.ReadLine();
                     //while (row != null)
-                    for (int i = 0; i < row.Length; i++)
+                    if(row.Contains("O")|row.Contains("."))
                     {
-                        if (row.Length > universe.GetLength(0))
-                            maxWidth = row.Length;
-
                         maxHeight++;
+                        maxWidth++;
                     }
+                    //else
+                    //--
+                    if (row.Length > maxWidth)
+                        maxWidth++;
+                    if (row.Length < maxWidth)
+                        maxWidth--;
+                        
                 }
                 universe = new bool[maxWidth, maxHeight];
                 spad = new bool[maxWidth, maxHeight];
+                SizeLabel.Text = "Universe Size: {" + maxWidth + ", " + maxHeight + "}";
                 reader.BaseStream.Seek(0, SeekOrigin.Begin);
+                int yPos = 0;
                 while (!reader.EndOfStream)
                 {
                     string row = reader.ReadLine();
                     for (int xPos = 0; xPos < row.Length; xPos++)
                     {
                         if (row[xPos] == 'O')
-                            universe[xPos, 0] = true;
+                            universe[xPos, yPos] = true;
+                           
                         else if (row[xPos] == '.')
-                            universe[xPos, 0] = false;
+                            universe[xPos, yPos] = false;
                     }
+                    yPos++;
                 }
                 reader.Close();
             }

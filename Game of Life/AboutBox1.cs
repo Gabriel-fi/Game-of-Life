@@ -20,6 +20,10 @@ namespace Game_of_Life
             this.labelCopyright.Text = AssemblyCopyright;
             this.labelCompanyName.Text = AssemblyCompany;
             this.textBoxDescription.Text = AssemblyDescription;
+            this.textBoxDescription.Text = 
+                ("This is the Game of Life program                            "
+                + '\n'+" By: Gabriel Leo"
+                +'\n' + " Started At: 05 / 03");
         }
 
         #region Assembly Attribute Accessors
